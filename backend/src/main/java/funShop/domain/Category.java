@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.ManyToMany;
 import javax.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Category {
 
@@ -17,6 +19,7 @@ public class Category {
 	@NotBlank(message = "Category name is required")
 	private String name;
 	@ManyToMany(mappedBy = "categories")
+	@JsonIgnore
 	private List<Product> products;
 
 	public Long getId() {

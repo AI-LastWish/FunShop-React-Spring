@@ -4,11 +4,12 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Brand {
@@ -18,7 +19,8 @@ public class Brand {
 	private Long Id;
 	@NotBlank(message = "Brand name is required")
 	private String name;
-	@OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "brand", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.REFRESH, mappedBy = "brand", orphanRemoval = true)
+	@JsonIgnore
 	private List<Product> products;
 
 	public Long getId() {

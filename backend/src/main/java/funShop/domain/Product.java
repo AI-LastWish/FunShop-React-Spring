@@ -3,7 +3,6 @@ package funShop.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
@@ -12,7 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import funShop.domain.dto.ProductDTO;
 
 @Entity
 public class Product {
@@ -25,19 +24,34 @@ public class Product {
 	private String image;
 	private String description;
 	private double price;
-	@NotBlank(message = "In stock number is required")
 	private int countInStock;
 	private double rating;
 	private int numReviews;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	@JoinColumn(name = "brand_id", updatable = false, nullable = false)
-	@JsonIgnore
+	
 	private Brand brand;
 	@ManyToMany
 	@JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-	@JsonIgnore
+	
 	private List<Category> categories;
+
+	public Product dtoToProduct(ProductDTO productDto, Brand brand, List<Category> categories) {
+		
+		this.Id = productDto.getId();
+		this.name = productDto.getName();
+		this.image = productDto.getImage();
+		this.description = productDto.getDescription();
+		this.price = productDto.getPrice();
+		this.countInStock = productDto.getCountInStock();
+		this.rating = productDto.getRating();
+		this.numReviews = productDto.getNumReviews();
+		this.brand = brand;
+		this.categories = categories;
+
+		return this;
+	}
 
 	public Long getId() {
 		return Id;
@@ -123,8 +137,8 @@ public class Product {
 	}
 
 	public Product(Long id, @NotBlank(message = "Product name is required") String name, String image,
-			String description, double price, @NotBlank(message = "In stock number is required") int countInStock,
-			double rating, int numReviews, Brand brand, List<Category> categories) {
+			String description, double price, int countInStock, double rating, int numReviews, Brand brand,
+			List<Category> categories) {
 		Id = id;
 		this.name = name;
 		this.image = image;
@@ -136,4 +150,5 @@ public class Product {
 		this.brand = brand;
 		this.categories = categories;
 	}
+
 }
