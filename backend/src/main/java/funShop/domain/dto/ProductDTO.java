@@ -2,17 +2,29 @@ package funShop.domain.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class ProductDTO {
 
 	private Long id;
+	@NotBlank(message = "Product name is required")
 	private String name;
 	private String image;
 	private String description;
+	@Min(value = 0, message = "Price cannot be less than 0")
 	private double price;
+	@Min(value = 0, message = "Count in stock cannot be less than 0")
 	private int countInStock;
+	@Min(value = 0, message = "Rating cannot be less than 0")
 	private double rating;
+	@Min(value = 0, message = "Number of reviews cannot be less than 0")
 	private int numReviews;
+	@Min(value = 1, message = "Brand id cannot be less than 1")
+	@NotNull(message = "Brand ID cannot be null")
 	private Long brand_id;
+	@NotNull(message = "Category IDs cannot be null")
 	private List<Long> category_id;
 
 	public Long getId() {

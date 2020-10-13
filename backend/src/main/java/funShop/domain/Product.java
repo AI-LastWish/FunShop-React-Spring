@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 
 import funShop.domain.dto.ProductDTO;
@@ -23,9 +24,13 @@ public class Product {
 	private String name;
 	private String image;
 	private String description;
+	@Min(value = 0, message = "Price cannot be less than 0")
 	private double price;
+	@Min(value = 0, message = "Count in stock cannot be less than 0")
 	private int countInStock;
+	@Min(value = 0, message = "Rating cannot be less than 0")
 	private double rating;
+	@Min(value = 0, message = "Number of reviews cannot be less than 0")
 	private int numReviews;
 
 	@ManyToOne
