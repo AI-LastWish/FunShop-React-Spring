@@ -1,16 +1,11 @@
 package funShop.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +20,7 @@ import funShop.domain.Product;
 import funShop.domain.dto.ProductDTO;
 import funShop.services.impl.ProductCommandService;
 import funShop.services.impl.ProductQueryService;
+import funShop.services.mapValidation.MapValidationErrorService;
 
 @RestController
 @RequestMapping("/api/products")
@@ -37,20 +33,20 @@ public class ProductController {
 	@Autowired
 	private ProductCommandService productCommandService;
 
+	@Autowired
+	private MapValidationErrorService mapValidationErrorService;
+
 //	CREATE
 	@PostMapping("")
 	public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDto, BindingResult result) {
+
+		var errorMap = mapValidationErrorService.MapValidationService(result);
 		
-		if(result.hasErrors()) {			
-			Map<String, String> errorMap=new HashMap<>();
-			
-			for (FieldError error : result.getFieldErrors()) {
-				errorMap.put(error.getField(), error.getDefaultMessage());
-			}
-			
-			return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
+		if (errorMap != null) {
+			return errorMap;
 		}
 
+//		Throw exception at HERE in case of create failed
 		var product = productCommandService.saveOrUpdate(productDto);
 
 		return new ResponseEntity<Product>(product, HttpStatus.CREATED);

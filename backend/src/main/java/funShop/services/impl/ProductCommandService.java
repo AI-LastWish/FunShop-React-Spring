@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import funShop.domain.Category;
 import funShop.domain.Product;
 import funShop.domain.dto.ProductDTO;
+import funShop.exceptions.ProductException;
 import funShop.repositories.ProductRepository;
 import funShop.services.IProductCommandService;
 
@@ -26,16 +27,20 @@ public class ProductCommandService implements IProductCommandService {
 	@Override
 	public Product saveOrUpdate(ProductDTO productDto) {
 
-		var product = new Product();
-		var brand = brandQueryService.getBrand(productDto.getBrand_id());
-		var categories = new ArrayList<Category>();
-		for (Long id : productDto.getCategory_id()) {
-			var category = categoryQueryService.getCategory(id);
-			categories.add(category);
-		}
-		product=product.dtoToProduct(productDto, brand, categories);
+		try {
+			var product = new Product();
+			var brand = brandQueryService.getBrand(productDto.getBrand_id());
+			var categories = new ArrayList<Category>();
+			for (Long id : productDto.getCategory_id()) {
+				var category = categoryQueryService.getCategory(id);
+				categories.add(category);
+			}
+			product=product.dtoToProduct(productDto, brand, categories);
 
-		return productRepository.save(product);
+			return productRepository.save(product);
+		}catch (Exception e) {
+			throw new ProductException(e.getMessage());
+		}
 	}
 
 	@Override
