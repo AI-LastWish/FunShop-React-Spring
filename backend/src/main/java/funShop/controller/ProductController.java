@@ -41,15 +41,14 @@ public class ProductController {
 	public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDto, BindingResult result) {
 
 		var errorMap = mapValidationErrorService.MapValidationService(result);
-		
+
 		if (errorMap != null) {
 			return errorMap;
 		}
 
-//		Throw exception at HERE in case of create failed
 		var product = productCommandService.saveOrUpdate(productDto);
-
 		return new ResponseEntity<Product>(product, HttpStatus.CREATED);
+
 	}
 
 //	READ
