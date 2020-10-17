@@ -2,18 +2,18 @@ package funShop.exceptions;
 
 public class ErrorMessage {
 	
-	private String errorMessage;
+	private String message;
 
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
 
-	public void setErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
-	public ErrorMessage(String errorMessage) {
-		this.errorMessage = errorMessage;
+	public ErrorMessage(String message) {
+		this.message = message;
 	}
 
 }
