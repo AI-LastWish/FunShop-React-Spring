@@ -53,9 +53,8 @@ public class ProductController {
 
 //	READ
 	@GetMapping("")
-	public Iterable<Product> getAllProducts() throws Exception {
-		throw new Exception("Test exception");
-//		return productQueryService.getAllProducts();
+	public Iterable<Product> getAllProducts() {
+		return productQueryService.getAllProducts();
 	}
 
 	@GetMapping("/{id}")
