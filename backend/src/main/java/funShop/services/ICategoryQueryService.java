@@ -6,6 +6,6 @@ public interface ICategoryQueryService {
 
 	Iterable<Category> getAllCategories();
 
-	Category getCategory(Long id);
+	Category getCategory(Long id) throws Exception;
 
 }

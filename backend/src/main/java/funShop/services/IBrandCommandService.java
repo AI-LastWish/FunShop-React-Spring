@@ -6,5 +6,5 @@ public interface IBrandCommandService {
 
 	Brand saveOrUpdate(Brand brand);
 
-	void deleteBrand(Long id);
+	void deleteBrand(Long id) throws Exception;
 }

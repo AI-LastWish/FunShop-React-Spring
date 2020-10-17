@@ -38,7 +38,7 @@ public class ProductController {
 
 //	CREATE
 	@PostMapping("")
-	public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDto, BindingResult result) {
+	public ResponseEntity<?> createProduct(@Valid @RequestBody ProductDTO productDto, BindingResult result) throws Exception {
 
 		var errorMap = mapValidationErrorService.MapValidationService(result);
 
@@ -58,7 +58,7 @@ public class ProductController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getProduct(@PathVariable Long id) {
+	public ResponseEntity<?> getProduct(@PathVariable Long id) throws Exception {
 
 		Product product = productQueryService.getProduct(id);
 
@@ -67,7 +67,7 @@ public class ProductController {
 
 //	UPDATE
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDTO request, @PathVariable Long id) {
+	public ResponseEntity<?> updateProduct(@Valid @RequestBody ProductDTO request, @PathVariable Long id) throws Exception {
 //		Throw error if user enter invalid product ID
 
 		var updateProductDto = productQueryService.updateProductDto(request, id);
@@ -79,7 +79,7 @@ public class ProductController {
 
 //	DELETE
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+	public ResponseEntity<?> deleteProduct(@PathVariable Long id) throws Exception {
 
 		productCommandService.deleteProduct(id);
 

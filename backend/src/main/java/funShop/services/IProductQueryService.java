@@ -7,8 +7,8 @@ public interface IProductQueryService {
 	
 	Iterable<Product> getAllProducts();
 	
-	Product getProduct(Long id);
+	Product getProduct(Long id) throws Exception;
 	
-	ProductDTO updateProductDto(ProductDTO request, Long id);
+	ProductDTO updateProductDto(ProductDTO request, Long id) throws Exception;
 
 }

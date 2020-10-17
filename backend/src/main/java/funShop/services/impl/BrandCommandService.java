@@ -19,9 +19,17 @@ public class BrandCommandService implements IBrandCommandService {
 	}
 
 	@Override
-	public void deleteBrand(Long id) {
+	public void deleteBrand(Long id) throws Exception {
 
-		var brand = brandRepository.findById(id).get();
+		Brand brand;
+		
+		try {
+			brand= brandRepository.findById(id).get();
+			
+		} catch (Exception e) {
+			var resMeg = "Brand with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
 		
 		brandRepository.delete(brand);
 	}

@@ -19,8 +19,17 @@ public class CategoryQueryService implements ICategoryQueryService {
 	}
 
 	@Override
-	public Category getCategory(Long id) {
-		return categoryRepository.findById(id).get();
+	public Category getCategory(Long id) throws Exception {
+		
+		Category category;
+		
+		try {
+			category=categoryRepository.findById(id).get();
+		} catch (Exception e) {
+			var resMeg = "Category with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
+		return category;
 	}
 
 }

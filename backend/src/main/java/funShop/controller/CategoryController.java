@@ -46,7 +46,7 @@ public class CategoryController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getCategory(@PathVariable Long id) {
+	public ResponseEntity<?> getCategory(@PathVariable Long id) throws Exception {
 
 		var category = categoryQueryService.getCategory(id);
 
@@ -55,7 +55,7 @@ public class CategoryController {
 	
 //	UPDATE
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCategory(@Valid @RequestBody Category request, @PathVariable Long id) {
+	public ResponseEntity<?> updateCategory(@Valid @RequestBody Category request, @PathVariable Long id) throws Exception {
 //		Throw error if user enter invalid brand ID
 
 		var oldCategory = categoryQueryService.getCategory(id);
@@ -69,7 +69,7 @@ public class CategoryController {
 	
 //	DELETE
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
+	public ResponseEntity<?> deleteCategory(@PathVariable Long id) throws Exception {
 
 		categoryCommandService.deleteCategory(id);
 

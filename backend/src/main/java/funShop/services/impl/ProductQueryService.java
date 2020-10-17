@@ -21,12 +21,21 @@ public class ProductQueryService implements IProductQueryService {
 	}
 
 	@Override
-	public Product getProduct(Long id) {
-		return productRepository.findById(id).get();
+	public Product getProduct(Long id) throws Exception {
+		Product product;
+		
+		try {
+			product=	productRepository.findById(id).get();
+		} catch (Exception e) {
+			var resMeg = "Product with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
+		
+		return product;
 	}
 
 	@Override
-	public ProductDTO updateProductDto(ProductDTO request, Long id) {
+	public ProductDTO updateProductDto(ProductDTO request, Long id) throws Exception {
 
 		Product updateProduct = getProduct(id);
 		ProductUtil productUtil = new ProductUtil();

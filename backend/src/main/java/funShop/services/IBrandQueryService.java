@@ -6,6 +6,6 @@ public interface IBrandQueryService {
 	
 	Iterable<Brand> getAllBrands();
 	
-	Brand getBrand(Long id);
+	Brand getBrand(Long id) throws Exception;
 
 }

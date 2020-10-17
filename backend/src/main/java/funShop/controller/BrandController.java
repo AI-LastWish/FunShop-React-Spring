@@ -47,7 +47,7 @@ public class BrandController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getBrand(@PathVariable Long id) {
+	public ResponseEntity<?> getBrand(@PathVariable Long id) throws Exception {
 
 		var brand = brandQueryService.getBrand(id);
 
@@ -56,8 +56,7 @@ public class BrandController {
 
 //	UPDATE
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateBrand(@Valid @RequestBody Brand request, @PathVariable Long id) {
-//		Throw error if user enter invalid brand ID
+	public ResponseEntity<?> updateBrand(@Valid @RequestBody Brand request, @PathVariable Long id) throws Exception {
 
 		var oldBrand = brandQueryService.getBrand(id);
 
@@ -70,7 +69,7 @@ public class BrandController {
 
 //	DELETE
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteBrand(@PathVariable Long id) {
+	public ResponseEntity<?> deleteBrand(@PathVariable Long id) throws Exception {
 
 		brandCommandService.deleteBrand(id);
 

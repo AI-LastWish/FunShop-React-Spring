@@ -19,8 +19,16 @@ public class BrandQueryService implements IBrandQueryService {
 	}
 
 	@Override
-	public Brand getBrand(Long id) {
-		return brandRepository.findById(id).get();
+	public Brand getBrand(Long id) throws Exception {
+		Brand brand;
+		
+		try {
+			brand=brandRepository.findById(id).get();
+		} catch (Exception e) {
+			var resMeg = "Brand with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
+		return brand;
 	}
 
 }

@@ -24,7 +24,7 @@ public class ProductCommandService implements IProductCommandService {
 	private CategoryQueryService categoryQueryService;
 
 	@Override
-	public Product saveOrUpdate(ProductDTO productDto) {
+	public Product saveOrUpdate(ProductDTO productDto) throws Exception {
 
 		var product = new Product();
 		var brand = brandQueryService.getBrand(productDto.getBrand_id());
@@ -39,14 +39,16 @@ public class ProductCommandService implements IProductCommandService {
 	}
 
 	@Override
-	public void deleteProduct(Long id) {
+	public void deleteProduct(Long id) throws Exception {
 
-		var product = productRepository.findById(id).get();
-
-//		if (product == null) {
-//		var errMsg = "Cannot delete Product with ID '" + id + "', because it doesn't exists";
-//		throw new ProductIdException(errMsg);
-//	}
+		Product product; 
+		
+		try {
+			product= productRepository.findById(id).get();
+		} catch (Exception e) {
+			var resMeg = "Product with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
 
 		productRepository.delete(product);
 	}

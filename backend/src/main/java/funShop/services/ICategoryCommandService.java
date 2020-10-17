@@ -6,6 +6,6 @@ public interface ICategoryCommandService {
 
 	Category saveOrUpdate(Category category);
 
-	void deleteCategory(Long id);
+	void deleteCategory(Long id) throws Exception;
 
 }

@@ -19,9 +19,16 @@ public class CategoryCommandService implements ICategoryCommandService {
 	}
 
 	@Override
-	public void deleteCategory(Long id) {
+	public void deleteCategory(Long id) throws Exception {
 
-		var category = categoryRepository.findById(id).get();
+		Category category;
+		
+		try {
+			category= categoryRepository.findById(id).get();
+		} catch (Exception e) {
+			var resMeg = "Category with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
 
 		categoryRepository.delete(category);
 	}
