@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import funShop.domain.User;
+import funShop.domain.dto.UserDTO;
 import funShop.payload.JWTLoginSucessReponse;
 import funShop.payload.LoginRequest;
 import funShop.security.JwtTokenProvider;
 import funShop.services.impl.UserCommandService;
+import funShop.services.impl.UserQueryService;
 import funShop.services.mapValidation.MapValidationErrorService;
 import funShop.validator.UserValidator;
 import static funShop.security.SecurityConstants.TOKEN_PREFIX;
@@ -39,6 +41,9 @@ public class UserController {
 	private UserCommandService userCommandService;
 
 	@Autowired
+	private UserQueryService userQueryService;
+
+	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
@@ -54,32 +59,37 @@ public class UserController {
 		if (errorMap != null)
 			return errorMap;
 
-		User newUser = userCommandService.saveUser(user);
+		UserDTO newUserDto = userCommandService.saveUser(user);
 
-		return new ResponseEntity<User>(newUser, HttpStatus.CREATED);
+		return new ResponseEntity<UserDTO>(newUserDto, HttpStatus.CREATED);
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, BindingResult result) {
-		
+
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
+
 		if (errorMap != null)
 			return errorMap;
-		
+
 		try {
 			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(
-							loginRequest.getUsername(), 
-							loginRequest.getPassword()));
+					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			String jwt = TOKEN_PREFIX + tokenProvider.generateToken(authentication);
-			
-			return ResponseEntity.ok(new JWTLoginSucessReponse(true, jwt));
-		}catch (Exception e) {
+
+			UserDTO userDto = UserDTO.userToUserDTO(userQueryService.getUserByUsername(loginRequest.getUsername()));
+
+			var jwtRes = new JWTLoginSucessReponse(userDto.getId(), userDto.getUsername(), userDto.getFullName(),
+					userDto.isAdmin(), jwt);
+
+			return new ResponseEntity<JWTLoginSucessReponse>(jwtRes, HttpStatus.OK);
+
+		} catch (Exception e) {
 			throw new BadCredentialsException(null);
-		}		
-		
+		}
+
 	}
 
 }

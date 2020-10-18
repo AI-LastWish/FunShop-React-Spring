@@ -1,9 +1,10 @@
 package funShop.services;
 
 import funShop.domain.User;
+import funShop.domain.dto.UserDTO;
 
 public interface IUserCommandService {
 	
-	User saveUser(User newUser) throws Exception;
+	UserDTO saveUser(User newUser) throws Exception;
 
 }

@@ -23,14 +23,14 @@ public class ProductQueryService implements IProductQueryService {
 	@Override
 	public Product getProduct(Long id) throws Exception {
 		Product product;
-		
+
 		try {
-			product=	productRepository.findById(id).get();
+			product = productRepository.findById(id).get();
 		} catch (Exception e) {
 			var resMeg = "Product with ID: '" + id + "' not found";
 			throw new Exception(resMeg);
 		}
-		
+
 		return product;
 	}
 

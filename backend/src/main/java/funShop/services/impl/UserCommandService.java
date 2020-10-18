@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import funShop.domain.User;
+import funShop.domain.dto.UserDTO;
 import funShop.repositories.UserRepository;
 import funShop.services.IUserCommandService;
 
@@ -18,7 +19,7 @@ public class UserCommandService implements IUserCommandService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public User saveUser(User newUser) throws Exception {
+	public UserDTO saveUser(User newUser) throws Exception {
 
 		newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
 		// Username has to be unique (exception)
@@ -26,9 +27,12 @@ public class UserCommandService implements IUserCommandService {
 		// Make sure that password and confirmPassword match
 		// We don't persist or show the confirmPassword
 		newUser.setConfirmPassword("");
-		
+
 		try {
-			return userRepository.save(newUser);
+			var user = userRepository.save(newUser);
+			var userDto = UserDTO.userToUserDTO(user);
+
+			return userDto;
 
 		} catch (Exception e) {
 			var errMsg = "Username '" + newUser.getUsername() + "' already exists";
