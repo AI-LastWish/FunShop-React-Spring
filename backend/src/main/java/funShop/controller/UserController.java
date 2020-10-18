@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import funShop.domain.User;
 import funShop.services.impl.UserCommandService;
 import funShop.services.mapValidation.MapValidationErrorService;
+import funShop.validator.UserValidator;
 
 @RestController
 @RequestMapping("/api/users")
@@ -22,16 +23,17 @@ public class UserController {
     @Autowired
     private MapValidationErrorService mapValidationErrorService;
 	
-//    @Autowired
-//    private UserValidator userValidator;
+    @Autowired
+    private UserValidator userValidator;
     
     @Autowired
     private UserCommandService userCommandService;
 
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) throws Exception {
+		
 		// Validate passwords match
-//		userValidator.validate(user, result);
+		userValidator.validate(user, result);
 
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if (errorMap != null)
