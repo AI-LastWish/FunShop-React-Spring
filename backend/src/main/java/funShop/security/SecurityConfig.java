@@ -15,7 +15,8 @@ import org.springframework.security.config.BeanIds;
 
 import funShop.services.impl.CustomUserDetailsQueryService;
 
-import static funShop.security.SecurityConstants.SIGN_UP_URLS;;
+import static funShop.security.SecurityConstants.SIGN_UP_URLS;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -28,21 +29,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private CustomUserDetailsQueryService customUserDetailsQueryService;
 
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(customUserDetailsQueryService) // Cung cáp userservice cho spring security
 				.passwordEncoder(bCryptPasswordEncoder); // cung cấp password encoder
 	}
-	
+
 //	return 1 of 3:
 //	an Authentication with value authenticated=true if the input represents a valid principal and can be verified
 //	Throw an AuthenticationException if the input represents an invalid principal
 //	Return null if it can’t decide
 	@Override
-    @Bean(BeanIds.AUTHENTICATION_MANAGER)
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
-    }
+	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
+	}
 
 	@Autowired
 	private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -68,6 +74,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(SIGN_UP_URLS).permitAll()
 //                ANYTHING other than the above Matchers NEED to be authenticated
 				.anyRequest().authenticated();
+
+//		Add các filter vào ứng dụng của chúng ta, thứ mà sẽ hứng các request 
+//		để xử lý trước khi tới các xử lý trong controllers.
+		http.addFilterBefore(
+				jwtAuthenticationFilter(), 
+				UsernamePasswordAuthenticationFilter.class);
 
 	}
 

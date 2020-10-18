@@ -12,6 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.context.request.WebRequest;
 
 import funShop.security.JwtAuthenticationEntryPoint;
@@ -21,7 +22,15 @@ public class ApiExceptionHandler {
 
 	@ExceptionHandler(BadCredentialsException.class)
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-	public void handleUnauthorizedRequest(HttpServletRequest httpServletRequest,
+	public void handleWrongPasswordRequest(HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+		JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint = new JwtAuthenticationEntryPoint();
+		jwtAuthenticationEntryPoint.commence(httpServletRequest, httpServletResponse, e);
+	}
+	
+	@ExceptionHandler(Unauthorized.class)
+	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
+	public void handleWrongUsernameRequest(HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
 		JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint = new JwtAuthenticationEntryPoint();
 		jwtAuthenticationEntryPoint.commence(httpServletRequest, httpServletResponse, e);
