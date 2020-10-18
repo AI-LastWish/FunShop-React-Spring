@@ -41,8 +41,6 @@ public class User implements UserDetails {
 	private String confirmPassword;
 	@NotNull
 	private boolean admin = false;
-	
-//	OneToMany with Product
 
 	public User() {
 	}

@@ -1,21 +1,49 @@
 package funShop.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.BeanIds;
+
+import funShop.services.impl.CustomUserDetailsQueryService;
+
+import static funShop.security.SecurityConstants.SIGN_UP_URLS;;
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
-		securedEnabled = true,
-		jsr250Enabled = true,
-		prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter{
+@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	private CustomUserDetailsQueryService customUserDetailsQueryService;
+
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(customUserDetailsQueryService) // Cung cáp userservice cho spring security
+				.passwordEncoder(bCryptPasswordEncoder); // cung cấp password encoder
+	}
 	
+//	return 1 of 3:
+//	an Authentication with value authenticated=true if the input represents a valid principal and can be verified
+//	Throw an AuthenticationException if the input represents an invalid principal
+//	Return null if it can’t decide
+	@Override
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
+    }
+
 	@Autowired
 	private JwtAuthenticationEntryPoint unauthorizedHandler;
 
@@ -33,24 +61,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //				login form, default URL after login, and some other options
 				.authorizeRequests()
 //				setup PUBLIC route
-                .antMatchers(
-                        "/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js"
-                ).permitAll()
+				.antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html",
+						"/**/*.css", "/**/*.js")
+				.permitAll()
 //                TEST
-                .antMatchers("/api/users/**").permitAll()
+				.antMatchers(SIGN_UP_URLS).permitAll()
 //                ANYTHING other than the above Matchers NEED to be authenticated
-                .anyRequest().authenticated()
-                ;
-		
+				.anyRequest().authenticated();
+
 	}
 
-	
 }
