@@ -29,7 +29,7 @@ public class UserController {
     private UserCommandService userCommandService;
 
 	@PostMapping("/register")
-	public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
+	public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) throws Exception {
 		// Validate passwords match
 //		userValidator.validate(user, result);
 

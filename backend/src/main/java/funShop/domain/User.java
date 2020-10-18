@@ -40,7 +40,7 @@ public class User implements UserDetails {
 	@Transient // annotate that we ONLY using confirmPassword, but NOT persisting it to DB
 	private String confirmPassword;
 	@NotNull
-	private boolean isAdmin = false;
+	private boolean admin = false;
 	
 //	OneToMany with Product
 
@@ -72,11 +72,11 @@ public class User implements UserDetails {
 	}
 
 	public boolean isAdmin() {
-		return isAdmin;
+		return admin;
 	}
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 
 	public void setUsername(String username) {
