@@ -15,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class User implements UserDetails {
 
@@ -43,41 +45,6 @@ public class User implements UserDetails {
 //	OneToMany with Product
 
 	public User() {
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return null;
-	}
-
-	@Override
-	public String getPassword() {
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		return null;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		return false;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return false;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		return false;
 	}
 
 	public Long getId() {
@@ -118,6 +85,51 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}	
+	
+	@Override
+	public String getPassword() {
+		return this.password;
+	}
+	
+	@Override
+	public String getUsername() {
+		return this.username;
+	}
+	
+	/*
+    UserDetails interface methods
+    DON'T use @JsonIgnore in REAL app, use DTO instead
+	 */
+	
+	@Override
+	@JsonIgnore
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return null;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	@JsonIgnore
+	public boolean isEnabled() {
+		return true;
 	}
 
 }
