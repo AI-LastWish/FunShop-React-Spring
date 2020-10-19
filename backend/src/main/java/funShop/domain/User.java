@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -37,8 +36,6 @@ public class User implements UserDetails {
 	private String fullName;
 	@NotBlank(message = "Password field is required")
 	private String password;
-	@Transient // annotate that we ONLY using confirmPassword, but NOT persisting it to DB
-	private String confirmPassword;
 	@NotNull
 	private boolean admin = false;
 
@@ -61,14 +58,6 @@ public class User implements UserDetails {
 		this.fullName = fullName;
 	}
 
-	public String getConfirmPassword() {
-		return confirmPassword;
-	}
-
-	public void setConfirmPassword(String confirmPassword) {
-		this.confirmPassword = confirmPassword;
-	}
-
 	public boolean isAdmin() {
 		return admin;
 	}
@@ -83,23 +72,23 @@ public class User implements UserDetails {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}	
-	
+	}
+
 	@Override
 	public String getPassword() {
 		return this.password;
 	}
-	
+
 	@Override
 	public String getUsername() {
 		return this.username;
 	}
-	
+
 	/*
-    UserDetails interface methods
-    DON'T use @JsonIgnore in REAL app, use DTO instead
+	 * UserDetails interface methods DON'T use @JsonIgnore in REAL app, use DTO
+	 * instead
 	 */
-	
+
 	@Override
 	@JsonIgnore
 	public Collection<? extends GrantedAuthority> getAuthorities() {

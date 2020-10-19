@@ -52,12 +52,12 @@ public class UserController {
 	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) throws Exception {
 
-		// Validate passwords match
-		userValidator.validate(user, result);
-
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 		if (errorMap != null)
 			return errorMap;
+
+		// Validate passwords match
+		userValidator.validate(user, result);
 
 		UserDTO newUserDto = userCommandService.saveUser(user);
 

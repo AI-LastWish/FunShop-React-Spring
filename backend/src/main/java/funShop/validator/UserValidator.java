@@ -15,17 +15,14 @@ public class UserValidator implements Validator {
 	}
 
 	@Override
-	public void validate(Object object, Errors errors) {
+	public void validate(Object object, Errors errors) {		
 
 		User user = (User) object;
+		
+		System.out.println(user);
 
-		if (user.getPassword().length() < 6) {
+		if (user == null || user.getPassword().length() < 6) {
 			errors.rejectValue("password", "Length", "Password must be at least 6 characters");
-		}
-
-		// confirm Password
-		if (!user.getPassword().equals(user.getConfirmPassword())) {
-			errors.rejectValue("confirmPassword", "Match", "Passwords must match");
 		}
 
 	}
