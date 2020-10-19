@@ -3,6 +3,7 @@ package funShop.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,9 @@ import org.springframework.security.config.BeanIds;
 import funShop.services.impl.CustomUserDetailsQueryService;
 
 import static funShop.security.SecurityConstants.SIGN_UP_URLS;
+import static funShop.security.SecurityConstants.PRODUCTS_URL;
+import static funShop.security.SecurityConstants.BRANDS_URL;
+import static funShop.security.SecurityConstants.CATEGORIES_URL;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -67,10 +71,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //				login form, default URL after login, and some other options
 				.authorizeRequests()
 //				setup PUBLIC route
-				.antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html",
-						"/**/*.css", "/**/*.js")
+				.antMatchers("/", 
+						"/favicon.ico", 
+						"/**/*.png", 
+						"/**/*.gif", 
+						"/**/*.svg", 
+						"/**/*.jpg", 
+						"/**/*.html",
+						"/**/*.css", 
+						"/**/*.js")
 				.permitAll()
-//                TEST
+				.antMatchers(HttpMethod.GET, PRODUCTS_URL).permitAll()
+				.antMatchers(HttpMethod.GET, BRANDS_URL).permitAll()
+				.antMatchers(HttpMethod.GET, CATEGORIES_URL).permitAll()
 				.antMatchers(SIGN_UP_URLS).permitAll()
 //                ANYTHING other than the above Matchers NEED to be authenticated
 				.anyRequest().authenticated();
