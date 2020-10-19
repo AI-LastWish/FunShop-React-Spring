@@ -1,27 +1,18 @@
 package funShop.exceptions;
 
 public class InvalidLoginResponse {
-    private String username;
-    private String password;
+	private String message;
 
-    public InvalidLoginResponse() {
-        this.username = "Invalid Username";
-        this.password = "Invalid Password";
-    }
+	public String getMessage() {
+		return message;
+	}
 
-    public String getUsername() {
-        return username;
-    }
+	public void setMessage(String message) {
+		this.message = message;
+	}
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+	public InvalidLoginResponse() {
+		this.message = "Invalid Email or Password";
+	}
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

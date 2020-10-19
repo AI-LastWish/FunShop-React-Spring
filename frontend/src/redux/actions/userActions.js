@@ -14,7 +14,7 @@ export const login = (username, password) => async dispatch => {
     }
 
     const { data } = await axios.post(
-      'api/users/login', { username, password }, config
+      '/users/login', { username, password }, config
     )
 
     dispatch({
