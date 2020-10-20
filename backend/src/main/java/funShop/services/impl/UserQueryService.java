@@ -29,4 +29,19 @@ public class UserQueryService implements IUserQueryService {
 		return user;
 	}
 
+	@Override
+	public User getUserById(Long id) throws Exception {
+		User user;
+
+		try {
+			user = userRepository.findById(id).get();
+
+		} catch (Exception e) {
+			var resMeg = "User with ID: '" + id + "' not found";
+			throw new Exception(resMeg);
+		}
+
+		return user;
+	}
+
 }

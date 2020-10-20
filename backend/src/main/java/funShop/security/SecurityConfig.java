@@ -17,6 +17,7 @@ import org.springframework.security.config.BeanIds;
 import funShop.services.impl.CustomUserDetailsQueryService;
 
 import static funShop.security.SecurityConstants.SIGN_UP_URLS;
+import static funShop.security.SecurityConstants.LOGIN_URLS;
 import static funShop.security.SecurityConstants.PRODUCTS_URL;
 import static funShop.security.SecurityConstants.BRANDS_URL;
 import static funShop.security.SecurityConstants.CATEGORIES_URL;
@@ -84,7 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, PRODUCTS_URL).permitAll()
 				.antMatchers(HttpMethod.GET, BRANDS_URL).permitAll()
 				.antMatchers(HttpMethod.GET, CATEGORIES_URL).permitAll()
-				.antMatchers(SIGN_UP_URLS).permitAll()
+				.antMatchers(HttpMethod.POST, SIGN_UP_URLS).permitAll()
+				.antMatchers(HttpMethod.POST, LOGIN_URLS).permitAll()
 //                ANYTHING other than the above Matchers NEED to be authenticated
 				.anyRequest().authenticated();
 

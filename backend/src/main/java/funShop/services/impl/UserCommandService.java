@@ -18,6 +18,9 @@ public class UserCommandService implements IUserCommandService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@Autowired
+	private UserQueryService userQueryService;
+
 	@Override
 	public UserDTO saveUser(User newUser) throws Exception {
 
@@ -35,6 +38,20 @@ public class UserCommandService implements IUserCommandService {
 			var errMsg = "Username '" + newUser.getUsername() + "' already exists";
 			throw new Exception(errMsg);
 		}
+	}
+
+	@Override
+	public UserDTO updateUser(User newUser) throws Exception {
+
+		var oldUser = userQueryService.getUserById(newUser.getId());
+
+		System.out.println("full name = " + newUser.getFullName());
+
+		oldUser.setFullName(newUser.getFullName() != null ? newUser.getFullName() : oldUser.getFullName());
+		oldUser.setUsername(newUser.getUsername() != null ? newUser.getUsername() : oldUser.getUsername());
+		oldUser.setPassword(newUser.getPassword() != null ? newUser.getPassword() : oldUser.getPassword());
+
+		return saveUser(oldUser);
 	}
 
 }

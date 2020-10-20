@@ -85,8 +85,8 @@ public class User implements UserDetails {
 	}
 
 	/*
-	 * UserDetails interface methods DON'T use @JsonIgnore in REAL app, use DTO
-	 * instead
+	 * UserDetails interface methods 
+	 * DON'T use @JsonIgnore in REAL app, use DTO instead
 	 */
 
 	@Override

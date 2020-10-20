@@ -11,7 +11,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,7 +72,7 @@ public class UserController {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 
 		if (errorMap != null)
-			return errorMap;
+			return errorMap;			
 
 		try {
 			Authentication authentication = authenticationManager.authenticate(
@@ -89,6 +91,25 @@ public class UserController {
 		} catch (Exception e) {
 			throw new BadCredentialsException(null);
 		}
+
+	}
+
+	@GetMapping("/profile")
+	public ResponseEntity<?> getUserProfile(@RequestBody UserDTO request) throws Exception {		
+
+		var user = userQueryService.getUserById(request.getId());
+
+		var userDto = UserDTO.userToUserDTO(user);
+
+		return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
+	}
+
+	@PutMapping("/profile")
+	public ResponseEntity<?> updateProfile(@RequestBody User request) throws Exception {
+
+		var userDto = userCommandService.updateUser(request);
+
+		return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
 
 	}
 

@@ -6,5 +6,7 @@ import funShop.domain.dto.UserDTO;
 public interface IUserCommandService {
 	
 	UserDTO saveUser(User newUser) throws Exception;
+	
+	UserDTO updateUser(User newUser) throws Exception;
 
 }
