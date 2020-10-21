@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,7 +71,7 @@ public class UserController {
 		ResponseEntity<?> errorMap = mapValidationErrorService.MapValidationService(result);
 
 		if (errorMap != null)
-			return errorMap;			
+			return errorMap;
 
 		try {
 			Authentication authentication = authenticationManager.authenticate(
@@ -94,10 +93,12 @@ public class UserController {
 
 	}
 
-	@GetMapping("/profile")
-	public ResponseEntity<?> getUserProfile(@RequestBody UserDTO request) throws Exception {		
+	@PostMapping("/profile")
+	public ResponseEntity<?> getUserProfile(@RequestBody Long request) throws Exception {
 
-		var user = userQueryService.getUserById(request.getId());
+		System.out.println("id = " + request.toString());
+
+		var user = userQueryService.getUserById(request);
 
 		var userDto = UserDTO.userToUserDTO(user);
 

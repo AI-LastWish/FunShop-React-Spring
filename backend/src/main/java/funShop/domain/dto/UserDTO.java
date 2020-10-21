@@ -52,4 +52,9 @@ public class UserDTO {
 		return userDto;
 	}
 
+	@Override
+	public String toString() {
+		return "UserDTO [id=" + id + ", username=" + username + ", fullName=" + fullName + ", admin=" + admin + "]";
+	}	
+
 }
