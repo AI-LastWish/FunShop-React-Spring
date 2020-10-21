@@ -20,7 +20,7 @@ const ProfileScreen = ({ history }) => {
 
   const { userInfo } = useSelector(state => state.userLogin)
 
-  let success = false;
+  const { success } = useSelector(state => state.updateUserProfile)
 
   useEffect(() => {
     if (!userInfo) {
@@ -41,7 +41,6 @@ const ProfileScreen = ({ history }) => {
       setMessage('Passwords do not match')
     else {
       dispatch(updateUserProfile({ id: user.id, fullName, password }))
-      success = true;
     }
 
   }
