@@ -109,6 +109,8 @@ public class UserController {
 	public ResponseEntity<?> updateProfile(@RequestBody User request) throws Exception {
 
 		var userDto = userCommandService.updateUser(request);
+		
+		System.out.println(userDto.toString());
 
 		return new ResponseEntity<UserDTO>(userDto, HttpStatus.OK);
 

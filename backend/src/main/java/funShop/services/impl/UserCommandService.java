@@ -43,15 +43,21 @@ public class UserCommandService implements IUserCommandService {
 	@Override
 	public UserDTO updateUser(User newUser) throws Exception {
 
+		if (newUser.getPassword() != null && !newUser.getPassword().isBlank())
+			newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+
 		var oldUser = userQueryService.getUserById(newUser.getId());
 
-		System.out.println("full name = " + newUser.getFullName());
+		oldUser.setFullName(newUser.getFullName() != null && !newUser.getFullName().isBlank() ? newUser.getFullName()
+				: oldUser.getFullName());
+		oldUser.setUsername(newUser.getUsername() != null && !newUser.getUsername().isBlank() ? newUser.getUsername()
+				: oldUser.getUsername());
+		oldUser.setPassword(newUser.getPassword() != null && !newUser.getPassword().isBlank() ? newUser.getPassword()
+				: oldUser.getPassword());
 
-		oldUser.setFullName(newUser.getFullName() != null ? newUser.getFullName() : oldUser.getFullName());
-		oldUser.setUsername(newUser.getUsername() != null ? newUser.getUsername() : oldUser.getUsername());
-		oldUser.setPassword(newUser.getPassword() != null ? newUser.getPassword() : oldUser.getPassword());
+		var user = userRepository.save(oldUser);
 
-		return saveUser(oldUser);
+		return UserDTO.userToUserDTO(user);
 	}
 
 }

@@ -4,7 +4,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
-import { getUserDetails } from '../redux/actions/userActions'
+import { getUserDetails, updateUserProfile } from '../redux/actions/userActions'
 
 const ProfileScreen = ({ history }) => {
 
@@ -19,6 +19,8 @@ const ProfileScreen = ({ history }) => {
   const { loading, error, user } = useSelector(state => state.userDetails)
 
   const { userInfo } = useSelector(state => state.userLogin)
+
+  let success = false;
 
   useEffect(() => {
     if (!userInfo) {
@@ -38,8 +40,8 @@ const ProfileScreen = ({ history }) => {
     if (password !== confirmPassword)
       setMessage('Passwords do not match')
     else {
-      // dispatch update profile
-
+      dispatch(updateUserProfile({ id: user.id, fullName, password }))
+      success = true;
     }
 
   }
@@ -50,6 +52,7 @@ const ProfileScreen = ({ history }) => {
         <h2>User Profile</h2>
         {message && <Message variant='danger'>{message}</Message>}
         {error && <Message variant='danger'>{error}</Message>}
+        {success && <Message variant='success'>Profile Updated</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
           <Form.Group controlId='fullName'>
@@ -65,7 +68,7 @@ const ProfileScreen = ({ history }) => {
           <Form.Group controlId='email'>
             <Form.Label>Email Address</Form.Label>
             <Form.Control
-            disabled
+              disabled
               type='email'
               placeholder='Enter email'
               value={username}
